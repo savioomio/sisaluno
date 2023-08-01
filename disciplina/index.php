@@ -3,14 +3,14 @@
 require_once "../conn.php";
 
 // Prepara e executa a query para selecionar todas as disciplinas
-$stmt = $conn->prepare("SELECT * FROM Disciplina");
+$stmt = $conn->prepare("SELECT * FROM disciplina");
 $stmt->execute();
 $disciplinas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Função para obter o nome do professor a partir do ID do professor
 function getProfessorName($conn, $idprofessor)
 {
-    $stmt = $conn->prepare("SELECT nome FROM Professor WHERE id = :id");
+    $stmt = $conn->prepare("SELECT nome FROM professor WHERE id = :id");
     $stmt->bindParam(':id', $idprofessor);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -25,7 +25,7 @@ if (isset($_POST['adicionar'])) {
     $idprofessor = $_POST['idprofessor'];
 
     // Prepara e executa a query para adicionar a disciplina
-    $stmt = $conn->prepare("INSERT INTO Disciplina (nomedisciplina, ch, semestre, idprofessor) VALUES (:nomedisciplina, :ch, :semestre, :idprofessor)");
+    $stmt = $conn->prepare("INSERT INTO disciplina (nomedisciplina, ch, semestre, idprofessor) VALUES (:nomedisciplina, :ch, :semestre, :idprofessor)");
     $stmt->bindParam(':nomedisciplina', $nomedisciplina, PDO::PARAM_STR);
     $stmt->bindParam(':ch', $ch, PDO::PARAM_INT);
     $stmt->bindParam(':semestre', $semestre, PDO::PARAM_STR);
@@ -46,7 +46,7 @@ if (isset($_POST['alterar']) && isset($_GET['id'])) {
     $idprofessor = $_POST['idprofessor'];
 
     // Prepara e executa a query para atualizar os dados da disciplina
-    $stmt = $conn->prepare("UPDATE Disciplina SET nomedisciplina = :nomedisciplina, ch = :ch, semestre = :semestre, idprofessor = :idprofessor WHERE id = :id");
+    $stmt = $conn->prepare("UPDATE disciplina SET nomedisciplina = :nomedisciplina, ch = :ch, semestre = :semestre, idprofessor = :idprofessor WHERE id = :id");
     $stmt->bindParam(':nomedisciplina', $nomedisciplina, PDO::PARAM_STR);
     $stmt->bindParam(':ch', $ch, PDO::PARAM_INT);
     $stmt->bindParam(':semestre', $semestre, PDO::PARAM_STR);
@@ -64,7 +64,7 @@ if (isset($_POST['excluir']) && isset($_GET['id'])) {
     $idDisciplina = $_GET['id'];
 
     // Prepara e executa a query para excluir a disciplina
-    $stmt = $conn->prepare("DELETE FROM Disciplina WHERE id = :id");
+    $stmt = $conn->prepare("DELETE FROM disciplina WHERE id = :id");
     $stmt->bindParam(':id', $idDisciplina, PDO::PARAM_INT);
     $stmt->execute();
 
@@ -86,7 +86,6 @@ if (isset($_POST['ver_matricula'])) {
     header("Location: lista_alunos_disciplina.php?disciplina_id=" . $disciplinaId);
     exit();
 }
-?>
 ?>
 <!DOCTYPE html>
 <html>
@@ -173,7 +172,7 @@ if (isset($_POST['ver_matricula'])) {
                                             <select class="form-select" id="idprofessor" name="idprofessor" required>
                                                 <?php
                                                 // Prepara e executa a query para selecionar apenas os professores com status "Ativo"
-                                                $stmt = $conn->prepare("SELECT id, nome FROM Professor WHERE estatus = 'Ativo'");
+                                                $stmt = $conn->prepare("SELECT id, nome FROM professor WHERE estatus = 'Ativo'");
                                                 $stmt->execute();
                                                 $professores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
