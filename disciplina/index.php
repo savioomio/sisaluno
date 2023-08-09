@@ -8,10 +8,9 @@ $stmt->execute();
 $disciplinas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Função para obter o nome do professor a partir do ID do professor
-function getProfessorName($conn, $idprofessor)
-{
+function getProfessorName($conn, $id){
     $stmt = $conn->prepare("SELECT nome FROM professor WHERE id = :id");
-    $stmt->bindParam(':id', $idprofessor);
+    $stmt->bindParam(':id', $id);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result['nome'];
@@ -255,7 +254,9 @@ if (isset($_POST['ver_matricula'])) {
                                 foreach ($professores as $professor) {
                                     echo '<option value="' . $professor['id'] . '">' . $professor['nome'] . '</option>';
                                 }
+                                exit();
                                 ?>
+            
                             </select>
                         </div>
 
